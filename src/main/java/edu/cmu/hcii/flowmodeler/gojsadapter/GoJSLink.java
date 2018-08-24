@@ -6,6 +6,7 @@ public class GoJSLink {
     String color;
     String text;
     String category;
+    String evidence;
 
 
     public GoJSLink(int from, int to, String text, String color){
@@ -17,5 +18,9 @@ public class GoJSLink {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public void setEvidence(String evidence) {
+        this.evidence = evidence;
     }
 }

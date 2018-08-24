@@ -99,8 +99,7 @@ function init() {
     function linkInfo(d) {  // Tooltip info for a link data object
         return "Link:\nfrom " + d.from + " to " + d.to;
     }
-    // The link shape and arrowhead have their stroke brush data bound to the "color" property
-    myDiagram.linkTemplate =
+    var linkWithLabelTemplate =
         $(go.Link,
             {   curve: go.Link.Bezier,
                 adjusting: go.Link.Stretch,
@@ -112,14 +111,22 @@ function init() {
             $(go.Shape,
                 { toArrow: "Standard", stroke: null },
                 new go.Binding("fill", "color")),
-            $(go.TextBlock, "transition",  // the label text
-                {
-                    textAlign: "center",
-                    font: "9pt helvetica, arial, sans-serif",
-                    margin: 4
-                },
-                // editing the text automatically updates the model data
-                new go.Binding("text").makeTwoWay()),
+            $(go.Panel, "Auto",
+                $(go.Shape,  // the label background, which becomes transparent around the edges
+                    {
+                        fill: $(go.Brush, "Radial",
+                            { 0: "rgb(255, 255, 255)", 0.3: "rgb(255, 255, 255)", 1: "rgba(255, 255, 255, 0)" }),
+                        stroke: null
+                    }),
+                $(go.TextBlock, "transition",  // the label text
+                    {
+                        textAlign: "center",
+                        font: "13pt helvetica, arial, sans-serif",
+                        margin: 4,
+                        editable: true  // enable in-place editing
+                    },
+                    // editing the text automatically updates the model data
+                    new go.Binding("text").makeTwoWay())),
             { // this tooltip Adornment is shared by all links
                 toolTip:
                     $(go.Adornment, "Auto",
@@ -130,6 +137,47 @@ function init() {
                 // the same context menu Adornment is shared by all links
             }
         );
+
+    var linkWithoutLabelTemplate =
+        $(go.Link,
+            {   curve: go.Link.Bezier,
+                adjusting: go.Link.Stretch,
+                toShortLength: 3 },
+            new go.Binding("curviness"),
+            $(go.Shape,
+                { strokeWidth: 2 },
+                new go.Binding("stroke", "color")),
+            $(go.Shape,
+                { toArrow: "Standard", stroke: null },
+                new go.Binding("fill", "color")),
+            $(go.Panel, "Auto",
+                $(go.TextBlock, "transition",  // the label text
+                    {
+                        textAlign: "center",
+                        font: "13pt helvetica, arial, sans-serif",
+                        margin: 4,
+                        editable: true  // enable in-place editing
+                    },
+                    // editing the text automatically updates the model data
+                    new go.Binding("text").makeTwoWay())),
+            { // this tooltip Adornment is shared by all links
+                toolTip:
+                    $(go.Adornment, "Auto",
+                        $(go.Shape, { fill: "#FFFFCC" }),
+                        $(go.TextBlock, { margin: 4 },  // the tooltip shows the result of calling linkInfo(data)
+                            new go.Binding("text", "", linkInfo))
+                    ),
+                // the same context menu Adornment is shared by all links
+            }
+        );
+
+    var linkTemplmap = new go.Map("string", go.Link);
+    // for each of the node categories, specify which template to use
+    linkTemplmap.add("label", linkWithLabelTemplate);
+    linkTemplmap.add("nolabel", linkWithoutLabelTemplate);
+    linkTemplmap.add("", linkWithoutLabelTemplate);
+    myDiagram.linkTemplateMap = linkTemplmap;
+    
     // Define the appearance and behavior for Groups:
     function groupInfo(adornment) {  // takes the tooltip or context menu, not a group node data object
         var g = adornment.adornedPart;  // get the Group that the tooltip adorns

@@ -18,8 +18,15 @@ public class GoJSNode {
     public GoJSNode(Entity entity, String color, String category){
         this.key = entity.getEntityId();
         this.text = entity.getEntityText();
+        if(entity.getEvidence() != null) {
+            this.text += (" [" + "E: " + entity.getEvidence() + "]");
+        }
+        if(entity.isBreakdown()) {
+            this.text += " ⚡";
+        }
         this.category = category;
         this.isGroup = entity.getSubEntities() != null && entity.getSubEntities().size() > 0;
+        this.evidence = entity.getEvidence();
         if(this.isGroup){
             //making all groups black for now
             this.color = "black";

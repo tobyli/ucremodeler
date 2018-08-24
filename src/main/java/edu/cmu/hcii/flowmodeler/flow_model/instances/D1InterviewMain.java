@@ -5,15 +5,15 @@ import edu.cmu.hcii.flowmodeler.flow_model.model.FlowModel;
 public class D1InterviewMain {
     public static void main(String[] args) {
         FlowModel flowModel = new FlowModel("D1");
-        flowModel.setRoleColor("lightblue")
-                .setArtifactColor("lightgreen");
+        flowModel.setRoleColor("violet")
+                .setArtifactColor("aquamarine");
 
-        flowModel.addNewFirstLevelRole("CMU")
+        flowModel.addNewFirstLevelRole("CMU", "E1", false)
                 .addNewFirstLevelRole("Mechanics");
 
         flowModel.findEntityByName("CMU")
-                .addNewSubArtifact("Transportation division")
-                .addNewSubArtifact("6 escort pick up stops");
+                .addNewSubArtifact("Transportation division", "E2", true)
+                .addNewSubArtifact("Escort stops", true);
 
         flowModel.findEntityByName("Transportation division")
                 .addNewSubArtifact("Shuttle services")
@@ -26,13 +26,13 @@ public class D1InterviewMain {
                 .addNewSubRole("Shift coordinator");
 
         flowModel.findEntityByName("Shuttle drivers")
-                .addNewSubRole("D0");
+                .addNewSubRole("D0", "E3");
 
         //flowModel.addFlowByNames("CMU", "Transportation division", "funds");
-        flowModel.addFlowByNames("Shuttle drivers", "Shuttle services", "drives");
-        flowModel.addFlowByNames("D0", "Vehicle", "needs");
+        flowModel.addFlowByNames("Shuttle drivers", "Shuttle services", "drives", "LE1", true);
+        flowModel.addFlowByNames("D0", "Vehicle", "needs", true);
         flowModel.addFlowByNames("D0", "Shift coordinator", "work order");
-        flowModel.addFlowByNames("Escort drivers", "6 escort pick up stops", "pick up from");
+        flowModel.addFlowByNames("Escort drivers", "Escort stops", "pick up from");
         flowModel.addFlowByNames("Vehicle", "Mechanics", "needs repair from");
         flowModel.addFlowByNames("Mechanics", "Vehicle", "long time for repair");
 

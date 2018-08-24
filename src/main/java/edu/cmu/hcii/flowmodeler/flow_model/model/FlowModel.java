@@ -51,33 +51,51 @@ public class FlowModel {
     }
 
 
-    public FlowModel addNewFirstLevelArtifact(String entityName, String entityText) {
-        Artifact newArtifact = new Artifact(getNextEntityId(), entityName, entityText);
+    public FlowModel addNewFirstLevelArtifact(String entityName, String entityText, String evidence, boolean isBreakdown) {
+        Artifact newArtifact = new Artifact(getNextEntityId(), entityName, entityText, evidence, isBreakdown);
         firstLevelEntity.add(newArtifact);
         processNewEntity(newArtifact);
         return this;
     }
 
-    public FlowModel addNewFirstLevelArtifact(String entityText) {
-        return addNewFirstLevelArtifact(entityText, entityText);
+    public FlowModel addNewFirstLevelArtifact(String entityText, String evidence, boolean isBreakdown) {
+        return addNewFirstLevelArtifact(entityText, entityText, evidence, isBreakdown);
     }
 
-    public FlowModel addNewFirstLevelRole(String entityName, String entityText) {
-        Role newRole = new Role(getNextEntityId(), entityName, entityText);
+
+
+
+    public FlowModel addNewFirstLevelRole(String entityName, String entityText, String evidence, boolean isBreakdown) {
+        Role newRole = new Role(getNextEntityId(), entityName, entityText, evidence, isBreakdown);
         firstLevelEntity.add(newRole);
         processNewEntity(newRole);
         return this;
     }
 
     public FlowModel addNewFirstLevelRole(String entityText) {
-        return addNewFirstLevelRole(entityText, entityText);
+        return addNewFirstLevelRole(entityText, entityText, null, false);
+    }
+
+    public FlowModel addNewFirstLevelRole(String entityText, String evidence, boolean isBreakdown) {
+        return addNewFirstLevelRole(entityText, entityText, evidence, isBreakdown);
     }
 
     public FlowModel addFlowByNames(String fromName, String toName, String label) {
+        return addFlowByNames(fromName, toName, label, null, false);
+    }
+
+    public FlowModel addFlowByNames(String fromName, String toName, String label, boolean isBreakdown) {
+        return addFlowByNames(fromName, toName, label, null, isBreakdown);
+    }
+
+    public FlowModel addFlowByNames(String fromName, String toName, String label, String evidence) {
+        return addFlowByNames(fromName, toName, label, evidence, false);
+    }
+    public FlowModel addFlowByNames(String fromName, String toName, String label, String evidence, boolean isBreakdown) {
         Entity fromEntity = findEntityByName(fromName);
         Entity toEntity = findEntityByName(toName);
         if (fromEntity != null && toEntity != null) {
-            allFlows.add(new Flow(fromEntity, toEntity, label));
+            allFlows.add(new Flow(fromEntity, toEntity, label, evidence, isBreakdown));
         } else {
             System.err.println("ERROR: Can't find an entity with the specified name(s): " + (fromEntity == null ? fromName + " " : "") + (toEntity == null ? toName : ""));
             throw new RuntimeException();
@@ -125,7 +143,19 @@ public class FlowModel {
     public List<GoJSLink> getGoJSLinkList() {
         List<GoJSLink> results = new ArrayList<>();
         for (Flow flow : allFlows) {
-            GoJSLink link = new GoJSLink(flow.fromEntityId, flow.toEntityId, flow.label, "black");
+            String label = flow.label;
+            if (flow.evidence != null){
+                label += (" [" + "E: " + flow.evidence + "]");
+            }
+            if (flow.isBreakdown()){
+                label += " ⚡";
+            }
+            GoJSLink link = new GoJSLink(flow.fromEntityId, flow.toEntityId, label, "black");
+            if(label != null && label.length() > 0){
+                link.setCategory("label");
+            } else {
+                link.setCategory("nolabel");
+            }
             results.add(link);
         }
         return results;
