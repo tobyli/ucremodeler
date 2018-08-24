@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Flow Model</title>
+        <meta charset="UTF-8">
+        <script src="./js/lib/go.js"></script>
+        <script src="./js/lib/jquery.min.js"></script>
+        <script src="js/sequence_load_chart.js"></script>
+
+    </head>
+    <body>
+        <div id="sample" hidden>
+            <div id="myDiagramDiv" style="border: solid 1px black; width:1400px; height:700px"></div>
+        </div>
+        <input type="file" id="jsonFileUpload" onchange='onChooseFile(event, onFileLoad.bind(this, "contents"))'>
+        <button onclick="redraw()">Redraw</button>
+    </body>
+</html>
