@@ -4,7 +4,7 @@ import edu.cmu.hcii.flowmodeler.sequence_model.model.SequenceModel;
 
 public class D0_PickingUpDroppingOff {
     public static void main(String[] args) {
-        SequenceModel model = new SequenceModel("PickingUpDroppingOff");
+        SequenceModel model = new SequenceModel("D0_PickingUpDroppingOff");
 
         model.setFirstNode(model.getStep("drive"))
                 .setTriggerNode(model.getConditional("does the bus need to stop?").setEvidence("D0-53"), "approaching stop", "D0-53")

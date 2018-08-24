@@ -4,7 +4,7 @@ import edu.cmu.hcii.flowmodeler.sequence_model.model.SequenceModel;
 
 public class D0_Workday {
     public static void main(String[] args) {
-        SequenceModel model = new SequenceModel("Workday")
+        SequenceModel model = new SequenceModel("D0_Workday")
                 .setStepColor("lightyellow")
                 .setConditionalColor("lightpink");
 
