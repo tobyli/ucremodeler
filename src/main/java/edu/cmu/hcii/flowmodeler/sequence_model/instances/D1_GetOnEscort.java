@@ -2,9 +2,9 @@ package edu.cmu.hcii.flowmodeler.sequence_model.instances;
 
 import edu.cmu.hcii.flowmodeler.sequence_model.model.SequenceModel;
 
-public class D1_opendoor {
+public class D1_GetOnEscort {
     public static void main(String[] args) {
-        SequenceModel model = new SequenceModel("D1_opendoor")
+        SequenceModel model = new SequenceModel("D1_GetOnEscort")
                 .setStepColor("lightyellow")
                 .setConditionalColor("lightpink");
 

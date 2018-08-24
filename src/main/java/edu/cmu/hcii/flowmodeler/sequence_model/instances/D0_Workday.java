@@ -2,7 +2,7 @@ package edu.cmu.hcii.flowmodeler.sequence_model.instances;
 
 import edu.cmu.hcii.flowmodeler.sequence_model.model.SequenceModel;
 
-public class Workday {
+public class D0_Workday {
     public static void main(String[] args) {
         SequenceModel model = new SequenceModel("Workday")
                 .setStepColor("lightyellow")
