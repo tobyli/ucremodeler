@@ -22,6 +22,9 @@ public class D1_Workday {
                 .setTrueBranchNode(model.getStep("Pick up on last skipped pickup point").setEvidence("D1-16/17"))
                 .setNextNode(model.getStep("Pick up students at Escort stop"));
 
+        model.findConditionalByName("Skipped people in previous run?")
+                .setFalseBranchNode(model.getStep("Pick up students at Escort stop"));
+
         model.findConditionalByName("Is it full?")
                 .setFalseBranchNode(model.getStep("Load people").setEvidence("D1-15"))
                 .setNextNode(model.getStep("Pick up students at Escort stop"));
@@ -44,7 +47,7 @@ public class D1_Workday {
                 .setTriggerNode(model.getStep("Start dropping off based on custom route"), "Forget people (D1-58)");
 
         model.findStepByName("Start dropping off based on custom route")
-                .setTriggerNode(model.getStep("Call dispatch"), "Road closed/construction (D1-52); Skipped people (D1-48)")
+                .setTriggerNode(model.getStep("Call dispatch"), "Road closed/construction (D1-52), Skipped people (D1-48)")
                 .setNextNode(model.getStep("Start dropping off based on custom route"));
 
         model.findStepByName("Pick up the bus at Clyde street").setBreakdown(true);
